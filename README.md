@@ -4,4 +4,4 @@
 ![Modelo Entidad Relacion](/Sem.png)
 
 ## Diagrama Generado por el Manejador
-![Diagrama Generado](/diagrama.png)
+![Diagrama Generado](/diag.png)
