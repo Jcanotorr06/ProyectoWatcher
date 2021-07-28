@@ -1,29 +1,31 @@
-create trigger t_paz_t_salvo
-	on [dbo].[Prog_Cliente]
+create trigger t_paz_y_salvo
+	on [dbo].[Visualizacion]
 	instead of insert
 
 	as
-	declare @cliente int,
+
+	declare 
+	@contrato int,
 	@programa int,
 	@durac int,
 	@dia_contrato int
-	select @cliente=inserted.cod_cliente, @programa=inserted.cod_prog, @durac=inserted.duracion
-		from inserted
-
-	set @dia_contrato= (select min(day([fecha_cont]))
-	from [dbo].[Contrarto]
-	where [cod_cliente]=@cliente)
+		select  @contrato=inserted.cod_contrato, @programa=inserted.cod_programa, @durac=inserted.duracion
+			from inserted
+	
+	set @dia_contrato= (select day([fecha_cont])
+		from [dbo].[Contrarto]
+		where [cod_contrato]=@contrato)
 
 	if(day(getdate())>@dia_contrato)
 	begin
 		if exists (select [fecha] from [dbo].[Pago] where day([fecha])>=@dia_contrato and MONTH([fecha])=MONTH(getdate()) and year([fecha])=year(getdate()))
 		begin
-			insert into [dbo].[Prog_Cliente]
-				values(@cliente,@programa,@durac)
+			insert into [dbo].[Visualizacion]
+				values(@contrato,@programa,@durac)
 		end
 		else
 		begin
-			print('Su servicio est· suspendido por morosidad')
+			print('Su servicio est√° suspendido por morosidad')
 		end
 	end
 	else
@@ -31,13 +33,15 @@ create trigger t_paz_t_salvo
 		if exists (select [fecha] from [dbo].[Pago] where day([fecha])>=@dia_contrato and MONTH([fecha])=MONTH(getdate()) and year([fecha])=year(getdate())) or 
 			exists (select [fecha] from [dbo].[Pago] where day([fecha])>=@dia_contrato and MONTH([fecha])=MONTH(getdate())-1 and year([fecha])=year(getdate()))
 			begin
-				insert into [dbo].[Prog_Cliente]
-				values(@cliente,@programa,@durac)
+				insert into [dbo].[Visualizacion]
+				values(@contrato,@programa,@durac)
 			end
 			else
 			begin
-				print('Su servicio est· suspendido por morosidad')
+				print('Su servicio est√° suspendido por morosidad')
 			end
 		end
+
+
 
 
