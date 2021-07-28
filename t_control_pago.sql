@@ -4,18 +4,18 @@ create trigger t_control_pago
 
 	as
 	declare @cliente int,
-	@plan int,
+	@contrato int,
 	@monto money,
 	@fecha date
-	select @cliente=inserted.cod_cliente, @plan=inserted.cod_plan, @monto=inserted.monto,@fecha=inserted.fecha
+	select @cliente=inserted.cod_cliente, @contrato=inserted.cod_contrato, @monto=inserted.monto,@fecha=inserted.fecha
 		from inserted
 
-	if exists(select [cod_contrato] from [dbo].[Contrarto] where [cod_cliente]=@cliente and [cod_plan]=@plan)
+	if exists(select [cod_contrato] from [dbo].[Contrarto] where [cod_cliente]=@cliente and [cod_plan]=@contrato)
 	begin 
-		if exists(select [monto] from [dbo].[Plan] where [monto]=@monto and [cod_plan]=@plan)
+		if exists(select [monto] from [dbo].[Plan] where [monto]=@monto and [cod_plan]=@contrato)
 		begin
 			insert into [dbo].[Pago]	
-			values(@cliente,@plan,@monto,@fecha)
+			values(@cliente,@contrato,@monto,@fecha)
 		end
 		else
 		begin
@@ -26,4 +26,3 @@ create trigger t_control_pago
 	begin
 		print('Usted no cuenta con ese plan')
 	end
-
