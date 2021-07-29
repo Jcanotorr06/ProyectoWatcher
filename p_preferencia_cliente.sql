@@ -9,8 +9,9 @@ AS
 		TOP(1) @genero= pr.genero, 
 		@cantidad = COUNT(pr.genero)
 	FROM Programa AS pr 
-	JOIN Prog_Cliente AS pc ON pc.cod_prog = pr.cod_prog
-	WHERE pc.cod_cliente = @cod_cliente
+	JOIN Visualizacion as vis ON vis.cod_programa = pr.cod_prog
+	JOIN Contrarto as con ON con.cod_contrato = vis.cod_contrato
+	WHERE con.cod_cliente = @cod_cliente
 	GROUP BY pr.genero
 	HAVING COUNT(pr.genero) >= 3
 	ORDER BY COUNT(pr.genero) DESC

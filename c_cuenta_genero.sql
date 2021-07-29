@@ -3,7 +3,7 @@ DECLARE @cantidad int, @genero varchar(20)
 DECLARE c_cuenta_genero CURSOR FOR
 	SELECT ge.nombre, COUNT(pr.genero) AS cantidad
 	FROM Programa AS pr 
-	JOIN Prog_Cliente AS pc ON pc.cod_prog = pr.cod_prog
+	JOIN Visualizacion AS vis ON vis.cod_programa = pr.cod_prog
 	JOIN Genero AS ge ON ge.cod_gen = pr.genero
 	GROUP BY ge.nombre
 	ORDER BY cantidad DESC

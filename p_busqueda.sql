@@ -25,7 +25,7 @@ RETURN
 
 declare @mitipo int, @mibusqueda varchar(100)
 
-set @mitipo = 5
+set @mitipo = 1
 set @mibusqueda = 'Comedia'
 
 exec p_busqueda @mitipo, @mibusqueda
