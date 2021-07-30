@@ -12,7 +12,7 @@ create trigger t_control_pago
 
 	if exists(select [cod_contrato] from [dbo].[Contrarto] where [cod_cliente]=@cliente and [cod_contrato]=@contrato)
 	begin 
-		if exists(select [monto] from [dbo].[Plan] where [monto]=@monto )
+		if exists(select [monto] from [dbo].[Plan] as p join [dbo].[Contrarto] as c on p.[cod_plan]=c.[cod_plan] where [monto]=@monto and [cod_contrato]=@contrato)
 		begin
 			insert into [dbo].[Pago]	
 			values(@cliente,@contrato,@monto,@fecha)
